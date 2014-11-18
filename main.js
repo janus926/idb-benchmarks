@@ -66,31 +66,15 @@ var incrementalBtn = document.getElementById('incremental');
 var contents = document.getElementById('contents');
 
 function search(str) {
-  var time = Date.now();
-
-  var results = [];
-  var reStr = new RegExp(str, 'i');
   var store = db.transaction("contacts") .objectStore("contacts");
-
-  function appendResult(res) {
-    if (incrementalBtn.checked) {
-      contents.innerHTML += res + '<br>';
-    } else {
-      results.push(res);
-    }
-  }
-
+  var time = Date.now();
   var request = store.openCursor();
   request.onsuccess = function(evt) {
     var cursor = evt.target.result;
     if (cursor) {
-      if (reStr.test(cursor.value.info)) {
-        appendResult(cursor.value.info)
-      }
       cursor.continue();
     } else {
-      console.log('Time spent searching and traversing the whole database:', Date.now() - time + 'ms');
-      document.getElementById('contents').innerHTML += results.join('<br/>');
+      document.getElementById('contents').innerHTML = 'Time spent searching and traversing the whole database:' + (Date.now() - time) + 'ms<br/>';
     }
   };
 }
