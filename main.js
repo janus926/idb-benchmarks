@@ -62,10 +62,9 @@ function generateAll() {
 //};
 //}
 
-var incrementalBtn = document.getElementById('incremental');
 var contents = document.getElementById('contents');
 
-function search(str) {
+function search() {
   var store = db.transaction("contacts") .objectStore("contacts");
   var time = Date.now();
   var request = store.openCursor();
@@ -74,12 +73,12 @@ function search(str) {
     if (cursor) {
       cursor.continue();
     } else {
-      document.getElementById('contents').innerHTML = 'Time spent searching and traversing the whole database:' + (Date.now() - time) + 'ms<br/>';
+      document.getElementById('contents').innerHTML = 'Time spent traversing the whole database:' + (Date.now() - time) + 'ms<br/>';
     }
   };
 }
 
 document.getElementById('searchBtn').addEventListener('click', function(ev) {
   document.getElementById('contents').innerHTML = '';
-  search(document.getElementById('searchBox').value);
+  search();
 });
